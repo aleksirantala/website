@@ -8,6 +8,7 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'xlsx', 'xls'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
@@ -21,7 +22,7 @@ def upload_file():
         if 'file' not in request.files:
             return redirect(request.url)
         file = request.files['file']
-        # if user does not select file, browser submits an empty file part without filename
+        # if the user does not select file, the browser submits an empty file part without a filename
         if file.filename == '':
             return redirect(request.url)
         if file and allowed_file(file.filename):
@@ -45,4 +46,5 @@ def upload_file():
     '''
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
