@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import pandas as pd
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')  # Specify the template folder
 
 # Configuration for the uploaded files
 UPLOAD_FOLDER = 'uploads'
@@ -16,7 +16,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/', methods=['GET', 'POST'])
-def upload_file():
+def upload_file_or_serve():
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -31,19 +31,9 @@ def upload_file():
 
             # Read the Excel file with pandas
             data = pd.read_excel(filepath)
-            # Here, you can process the data as you like
-            # For now, let's just return the first 5 rows
             return data.head().to_html()
-
-    return '''
-    <!doctype html>
-    <title>Upload an Excel File</title>
-    <h1>Upload an Excel File</h1>
-    <form method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit value=Upload>
-    </form>
-    '''
+    else:  # This is the new part for handling GET requests
+        return render_template('index.html')  # Use render_template to serve HTML
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

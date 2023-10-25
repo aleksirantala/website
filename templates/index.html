@@ -1,0 +1,30 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Awesome Web App</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Web App</h1>
+    </header>
+    <main>
+        <section id="upload-section">
+            <h2>Upload an Excel File</h2>
+            <input type="file" id="file-input">
+        </section>
+        <section id="data-section">
+            <h2>Excel Data</h2>
+            <table id="data-table">
+                <!-- Data will go here -->
+            </table>
+        </section>
+    </main>
+    <footer>
+        <p>Created with ❤️</p>
+    </footer>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
